@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=4 uid="uid://dpvb5dkm1srf8"]
+
+[ext_resource type="Texture2D" uid="uid://bgyj1p0vrr60b" path="res://terrain_tiles/plains/plains_grass.png" id="1_kfj6u"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_womhj"]
+resource_name = "Material.001"
+cull_mode = 2
+albedo_texture = ExtResource("1_kfj6u")
+roughness = 0.5
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_i5a2c"]
+_surfaces = [{
+"aabb": AABB(-0.866025, 0, -1, 1.73205, 0.112176, 1.5),
+"format": 34896613377,
+"index_count": 24,
+"index_data": PackedByteArray("AAABAAIAAgABAAMAAQAAAAQAAQAEAAMAAAACAAUAAAAFAAQAAgADAAUABAAFAAMA"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 6,
+"vertex_data": PackedByteArray("AAAAAP//AAD//wAA//8AAP9/AAAAAAAA////////AAAAAP////8AAP9///8AAAAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_hh5nx"]
+resource_name = "plains_Circle"
+_surfaces = [{
+"aabb": AABB(-0.866025, 0, -1, 1.73205, 0.112176, 1.5),
+"attribute_data": PackedByteArray("CACbvfdyP3v3cvb/CXM/e/flm70Jc/b/Ceb2/wnmP3uh7j97oe72/7Pu9v+z7j97S/c/e0v39v/2/z979v/2/1339v9d9z97"),
+"format": 34896613399,
+"index_count": 24,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgABgAIAAkACgALAAwACgAMAA0ADgAPABAADgAQABEA"),
+"material": SubResource("StandardMaterial3D_womhj"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 18,
+"vertex_data": PackedByteArray("AAAAAP//usL//wAA//+6wv9/AAAAALrCAAD/////VNX/f///AABU1f///////1TV/38AAAAAjOL//wAA//+M4v///////4zi/3///wAAjOL//wAA////vwAAAAD///+/AAD//////7//////////vwAAAAD//4zi/38AAAAAjOL/f///AACM4gAA/////4ziqSyqaaksqmmpLKppVNWqKlTVqipU1aoqqTGpMakxqTGpMakxqTGpMf////////////////////9VTqmxVU6psVVOqbFVTqmx")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_i5a2c")
+
+[node name="Plains_Tile" type="MeshInstance3D"]
+mesh = SubResource("ArrayMesh_hh5nx")
+skeleton = NodePath("")

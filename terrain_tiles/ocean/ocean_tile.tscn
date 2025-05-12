@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=4 uid="uid://dt1m3kewqgho1"]
+
+[ext_resource type="Texture2D" uid="uid://cmdkavssedobu" path="res://terrain_tiles/ocean/ocean_Untitled.png" id="1_m3qpc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hrudd"]
+resource_name = "Material.001"
+cull_mode = 2
+albedo_texture = ExtResource("1_m3qpc")
+roughness = 0.5
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_xtgrt"]
+_surfaces = [{
+"aabb": AABB(-0.866025, 0, -1, 1.73205, 0.112176, 1.5),
+"format": 34896613377,
+"index_count": 24,
+"index_data": PackedByteArray("AAABAAIAAgABAAMAAQAAAAQAAQAEAAMAAAACAAUAAAAFAAQAAgADAAUABAAFAAMA"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 6,
+"vertex_data": PackedByteArray("AAAAAP//AAD//wAA//8AAP9/AAAAAAAA////////AAAAAP////8AAP9///8AAAAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_1akgw"]
+resource_name = "ocean_Circle"
+_surfaces = [{
+"aabb": AABB(-0.866025, 0, -1, 1.73205, 0.112176, 1.5),
+"attribute_data": PackedByteArray("CXM/ewlz9v/35Zu9CACbvfdy9v/3cj97CeY/ewnm9v+h7vb/oe4/e7PuP3uz7vb/S/f2/0v3P3v2//b/9v8/e133P3td9/b/"),
+"format": 34896613399,
+"index_count": 24,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgABgAIAAkACgALAAwACgAMAA0ADgAPABAADgAQABEA"),
+"material": SubResource("StandardMaterial3D_hrudd"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 18,
+"vertex_data": PackedByteArray("AAAAAP//qir//wAA//+qKv9/AAAAAKoqAAD/////RD3/f///AABEPf///////0Q9/38AAAAAch3//wAA//9yHf///////3Id/3///wAAch3//wAA////PwAAAAD///8/AAD//////z//////////PwAAAAD//3Id/38AAAAAch3/f///AAByHQAA/////3IdVFVUVVRVVFVUVVRVqulWU6rpVlOq6VZTqTGpMakxqTGpMakxqTGpMf////////////////////9VTqmxVU6psVVOqbFVTqmx")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_xtgrt")
+
+[node name="Ocean_Tile" type="MeshInstance3D"]
+mesh = SubResource("ArrayMesh_1akgw")
+skeleton = NodePath("")
