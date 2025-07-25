@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://gmbp56xkjwk2"]
+
+[ext_resource type="Script" uid="uid://cjyi7yenr5fqj" path="res://builder/lat_lon/parse_data.gd" id="1_s4c86"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_s4c86")

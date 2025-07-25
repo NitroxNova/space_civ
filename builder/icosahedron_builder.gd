@@ -35,6 +35,7 @@ func _init(_radius:float):
 	subdivide()
 	subdivide()
 	subdivide()
+	#subdivide()
 
 func subdivide():
 	var temp_faces = []

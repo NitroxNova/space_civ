@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dunb1nutwf5e6"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_gimnx"]
+vertices = PackedVector3Array(-0.779422, 0.45, 0.45, 0.779422, 0.45, 0.45, -1.1909e-05, 0.45, -0.9)
+polygons = [PackedInt32Array(0, 1, 2)]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D"]
+navigation_mesh = SubResource("NavigationMesh_gimnx")
