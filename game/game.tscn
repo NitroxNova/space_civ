@@ -1,0 +1,95 @@
+[gd_scene load_steps=10 format=3 uid="uid://bkektrbxoxojk"]
+
+[ext_resource type="Script" uid="uid://bdp1jvgyj3wmm" path="res://game/game.gd" id="1_l1rk1"]
+[ext_resource type="Script" uid="uid://cvreglwx355ig" path="res://game/gui.gd" id="2_vasa2"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_noarx"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_a0tk4"]
+sky_material = SubResource("ProceduralSkyMaterial_noarx")
+
+[sub_resource type="Environment" id="Environment_r3fl7"]
+background_mode = 2
+sky = SubResource("Sky_a0tk4")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_l1rk1"]
+radius = 10.0
+height = 20.0
+
+[sub_resource type="Gradient" id="Gradient_vasa2"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h7iqs"]
+gradient = SubResource("Gradient_vasa2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4fuuu"]
+albedo_texture = SubResource("GradientTexture2D_h7iqs")
+
+[node name="icosahedron_test" type="Node3D"]
+script = ExtResource("1_l1rk1")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_r3fl7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera_Base" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = SubResource("SphereMesh_l1rk1")
+surface_material_override/0 = SubResource("StandardMaterial3D_4fuuu")
+
+[node name="Camera_Arm" type="Node3D" parent="Camera_Base"]
+unique_name_in_owner = true
+
+[node name="Camera3D" type="Camera3D" parent="Camera_Base/Camera_Arm"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32.7171)
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("2_vasa2")
+
+[node name="Tile_Info" type="VBoxContainer" parent="GUI"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="type" type="Label" parent="GUI/Tile_Info"]
+layout_mode = 2
+text = "TILE TYPE"
+
+[node name="Label" type="Label" parent="GUI/Tile_Info"]
+layout_mode = 2
+text = "Build:"
+
+[node name="NewBuildTypeOptions" type="OptionButton" parent="GUI/Tile_Info"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 2
+popup/item_0/text = "Campsite"
+popup/item_0/id = 0
+popup/item_1/text = "Farm"
+popup/item_1/id = 1
+
+[node name="ConfirmBuild" type="Button" parent="GUI/Tile_Info"]
+layout_mode = 2
+text = "Confirm Build"
+
+[connection signal="pressed" from="GUI/Tile_Info/ConfirmBuild" to="GUI" method="_on_confirm_build_pressed"]

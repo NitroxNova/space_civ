@@ -1,7 +1,6 @@
 extends Resource
 class_name Planet_Builder
 
-var tiles = []
 var planet : Planet = Planet.new()
 var ocean_noise : FastNoiseLite
 var mountain_noise : FastNoiseLite
@@ -17,8 +16,9 @@ const BLANK_TILE = preload("res://tiles/terrain/blank_tile.tscn")
 var latitude_rain_temperature = ""
 
 func _init(_planet:Planet=null):
-	
-	if _planet != null:
+	if _planet == null:
+		planet = Planet.new()
+	else:
 		planet = _planet
 	var origin = Node3D.new()
 	origin.name = "origin"
@@ -39,8 +39,12 @@ func build():
 	var ico_builder = Icosahedron_Builder.new(15)
 	var mesh = ico_builder.create_mesh()
 	get_tiles(mesh)
-	for tile_id in tiles.size():
-		place_triangle(tile_id)
+	#spawn materials
+	for i in 5000:
+		var rand_tile = planet.tiles.pick_random()
+		var rand_mat = Biome.spawn_material(rand_tile.biome)
+		rand_tile.raw_material = rand_mat
+	#planet.build_tiles()
 	return mesh
 	
 func get_tiles(mesh:ArrayMesh):
@@ -48,42 +52,24 @@ func get_tiles(mesh:ArrayMesh):
 	var sf_vertex = sf_arrays[Mesh.ARRAY_VERTEX]
 	var sf_index = sf_arrays[Mesh.ARRAY_INDEX]
 	for tile_id in sf_index.size()/3:
-		var tile = []
+		var tile_pos = PackedVector3Array()
 		for i in 3:
-			tile.append(sf_vertex[sf_index[tile_id*3+i]])
-		tiles.append(tile)
+			tile_pos.append(sf_vertex[sf_index[tile_id*3+i]])
+		var center_point = (tile_pos[0] + tile_pos[1] + tile_pos[2]) /3
+		var tile = get_tile_type(center_point)
+		tile.vertices = tile_pos
+		planet.tiles.append(tile)
+		#tiles.append(tile)
 		#print(tile)
 
 
-func place_triangle(tile_id:int):
-	var tile = tiles[tile_id]
-	var origin = planet.get_node("origin")
-	origin.rotation = Vector3.ZERO
-	var center_point = (tile[0] + tile[1] + tile[2]) /3
-	var tile_mesh = get_tile_type(center_point)
-	origin.add_child(tile_mesh)
-	var tm_scale = max(tile[0].distance_to(center_point),tile[1].distance_to(center_point),tile[2].distance_to(center_point))
-	tile_mesh.scale = Vector3(tm_scale,tm_scale,tm_scale)
-	tile_mesh.position = Vector3.UP * Vector3.ZERO.distance_to(center_point)
-	origin.look_at(center_point)
-	origin.rotation.x -= PI/2
-	#print(tile_mesh.global_position)
-	#print(center_point)
-	var axis = center_point.normalized()
-	tile_mesh.look_at(tile[0],axis)
-	var xform = tile_mesh.global_transform
-	origin.remove_child(tile_mesh)
-	planet.add_child(tile_mesh)
-	tile_mesh.global_transform = xform
-	tiles[tile_id] = tile_mesh
-	tile_mesh.tile_selected.connect(planet.on_tile_selected)
-	planet.tiles.append(tile_mesh)
-
 func get_tile_type(tile_pos:Vector3):
+	
 	var noise_pos = tile_pos.normalized()
 	var noise = ocean_noise.get_noise_3dv(noise_pos*100)
 	##print(noise)
 	var tile = BLANK_TILE.instantiate()
+	tile.center_point = tile_pos
 	tile.lat_lon = lat_lon_from_position(tile_pos,planet.radius)
 	var rain_temp = rain_temp_from_latitude(tile.lat_lon[0])
 	tile.precipitation = rain_temp.rain
@@ -93,8 +79,17 @@ func get_tile_type(tile_pos:Vector3):
 		#tile = OCEAN_TILE.instantiate()
 		travel_cost = 10
 		tile.water = "salt"
-	#else: #land
-		#var mtn_noise_value = mountain_noise.get_noise_3dv(noise_pos*300)
+		tile.biome = Biome.OCEAN
+		tile.elevation = 0
+	else: #land
+		var mtn_noise_value = mountain_noise.get_noise_3dv(noise_pos*300)
+		tile.elevation = pow((mtn_noise_value + 1)/2,3) * 10000 
+		if tile.elevation > 3000:
+			tile.biome = Biome.MOUNTAIN
+		elif tile.elevation > 1500:
+			tile.biome = Biome.GRASSLAND_HILLS
+		else:
+			tile.biome = Biome.GRASSLAND
 		#if mtn_noise_value < 0:
 			#tile = PLAINS_TILE.instantiate()
 			#travel_cost = 1
