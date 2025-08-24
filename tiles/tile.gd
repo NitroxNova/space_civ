@@ -1,4 +1,5 @@
 extends StaticBody3D
+class_name Game_Tile
 
 var biome : int
 var elevation = 0
@@ -11,8 +12,12 @@ var mineral_resource
 var forest_type
 var ground_type #stone, sand, water?
 var lat_lon : Vector2 #latitude and longitude
-var raw_material : Material_Type
+var raw_material : String
 var vertices : PackedVector3Array #relative to planet
+var city
+var neighbor_tiles = []
+var diagonal_tiles = [] #touching on just one vertex
+var building : Building
 var center_point : Vector3
 signal tile_selected
 
@@ -22,8 +27,35 @@ func _ready() -> void:
 	#build_tile()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func process(delta: float) -> void:
+	if building != null:
+		building.process(delta)
+
+func is_hills():
+	if elevation < 1500:
+		return false
+	if elevation > 3000:
+		return false
+	return true
+
+func distance_to(target):
+	if target is City:
+		return center_point.distance_to(target.center.center_point)
+	if target is Game_Tile:
+		return center_point.distance_to(target.center_point)
+	
+func add_building(_building:Building):
+	building = _building
+	var mesh_inst = MeshInstance3D.new()
+	mesh_inst.mesh = building.type.mesh
+	if is_hills():
+		mesh_inst.position.y += .3
+	add_child(mesh_inst)
+	
+func set_city(_city:City):
+	city = _city
+	%city_colors.set_surface_override_material(0,city.material)
+	%city_colors.show()
 
 func build_tile():
 	#print("building tile")
@@ -52,11 +84,13 @@ func build_tile():
 		mesh.set_surface_override_material(0,material)
 		
 	add_child(mesh)		
-	if raw_material != null:
+	if raw_material != null and raw_material != "":
 		var sprite = Sprite3D.new()
 		sprite.rotation.x = -PI/2
 		sprite.position.y = 2
-		sprite.texture = load(raw_material.resource_path.get_basename() + ".png")
+		#sprite.texture = load(raw_material.resource_path.get_basename() + ".png")
+		var item_data = Item.list(raw_material)
+		sprite.texture = load("res://game/items/icon/" + item_data.icon + ".png")
 		#print(sprite.texture.get_size())
 		var new_scale = Vector2(64,64) / sprite.texture.get_size()
 		sprite.scale = Vector3(new_scale.x,new_scale.y,1.0)

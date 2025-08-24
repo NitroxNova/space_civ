@@ -40,12 +40,58 @@ func build():
 	var mesh = ico_builder.create_mesh()
 	get_tiles(mesh)
 	#spawn materials
+	get_neighboring_tiles()
 	for i in 5000:
 		var rand_tile = planet.tiles.pick_random()
 		var rand_mat = Biome.spawn_material(rand_tile.biome)
 		rand_tile.raw_material = rand_mat
 	#planet.build_tiles()
 	return mesh
+	
+func get_neighboring_tiles():
+	var t_index = {}
+	for tile in planet.tiles:
+		for i in 3:
+			add_tile_to_index(t_index,tile,i)
+	#print(t_index)
+	for tile in planet.tiles:
+		for v_idx in 3:
+			var coords = tile.vertices[v_idx]
+			for nb_tile in t_index[coords]:
+				if nb_tile == tile:
+					continue
+				if nb_tile in tile.neighbor_tiles:
+					continue
+				if nb_tile in tile.diagonal_tiles:
+					continue
+				if check_if_neighbors(tile,nb_tile):
+					tile.neighbor_tiles.append(nb_tile)
+				else:
+					tile.diagonal_tiles.append(nb_tile)
+
+func check_if_neighbors(tile1,tile2):
+	var verts1:Array = tile1.vertices.duplicate()
+	var verts2:Array = tile2.vertices.duplicate()
+	var match_count = 0
+	for i in verts1.size():
+		for j in verts2.size():
+			if verts1[i] == verts2[j]:
+				match_count += 1
+				verts2.remove_at(j)
+				break
+	if match_count == 2:
+		return true
+	if match_count > 2:
+		printerr("more than 2 vertices match?")
+	return false
+
+func add_tile_to_index(t_index,tile,v_idx):
+	var coords = tile.vertices[v_idx]
+	if coords not in t_index:
+		t_index[coords] = []
+	t_index[coords].append(tile)
+
+
 	
 func get_tiles(mesh:ArrayMesh):
 	var sf_arrays = mesh.surface_get_arrays(0)
@@ -86,7 +132,7 @@ func get_tile_type(tile_pos:Vector3):
 		tile.elevation = pow((mtn_noise_value + 1)/2,3) * 10000 
 		if tile.elevation > 3000:
 			tile.biome = Biome.MOUNTAIN
-		elif tile.elevation > 1500:
+		elif tile.is_hills():
 			tile.biome = Biome.GRASSLAND_HILLS
 		else:
 			tile.biome = Biome.GRASSLAND

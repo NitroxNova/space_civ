@@ -1,9 +1,11 @@
-Button
-OptionButton
 Label
 VBoxContainer
-Control
-MeshInstance3D
 Node3D
+MeshInstance3D
+HSeparator
+Button
+HBoxContainer
+OptionButton
+Control
 Camera3D
 Sprite3D

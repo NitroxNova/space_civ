@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bkektrbxoxojk"]
+[gd_scene load_steps=6 format=3 uid="uid://bkektrbxoxojk"]
 
 [ext_resource type="Script" uid="uid://bdp1jvgyj3wmm" path="res://game/game.gd" id="1_l1rk1"]
 [ext_resource type="Script" uid="uid://cvreglwx355ig" path="res://game/gui.gd" id="2_vasa2"]
@@ -16,18 +16,6 @@ sky = SubResource("Sky_a0tk4")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="SphereMesh" id="SphereMesh_l1rk1"]
-radius = 10.0
-height = 20.0
-
-[sub_resource type="Gradient" id="Gradient_vasa2"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_h7iqs"]
-gradient = SubResource("Gradient_vasa2")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4fuuu"]
-albedo_texture = SubResource("GradientTexture2D_h7iqs")
-
 [node name="icosahedron_test" type="Node3D"]
 script = ExtResource("1_l1rk1")
 
@@ -38,10 +26,8 @@ environment = SubResource("Environment_r3fl7")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Camera_Base" type="MeshInstance3D" parent="."]
+[node name="Camera_Base" type="Node3D" parent="."]
 unique_name_in_owner = true
-mesh = SubResource("SphereMesh_l1rk1")
-surface_material_override/0 = SubResource("StandardMaterial3D_4fuuu")
 
 [node name="Camera_Arm" type="Node3D" parent="Camera_Base"]
 unique_name_in_owner = true
@@ -75,11 +61,19 @@ grow_vertical = 2
 layout_mode = 2
 text = "TILE TYPE"
 
-[node name="Label" type="Label" parent="GUI/Tile_Info"]
+[node name="Label2" type="Label" parent="GUI/Tile_Info"]
 layout_mode = 2
-text = "Build:"
+text = "---------------------s"
 
-[node name="NewBuildTypeOptions" type="OptionButton" parent="GUI/Tile_Info"]
+[node name="city_name_label" type="Label" parent="GUI/Tile_Info"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NewBuildContainer" type="VBoxContainer" parent="GUI/Tile_Info"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NewBuildTypeOptions" type="OptionButton" parent="GUI/Tile_Info/NewBuildContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 2
@@ -88,8 +82,42 @@ popup/item_0/id = 0
 popup/item_1/text = "Farm"
 popup/item_1/id = 1
 
-[node name="ConfirmBuild" type="Button" parent="GUI/Tile_Info"]
+[node name="ConfirmBuild" type="Button" parent="GUI/Tile_Info/NewBuildContainer"]
 layout_mode = 2
 text = "Confirm Build"
 
-[connection signal="pressed" from="GUI/Tile_Info/ConfirmBuild" to="GUI" method="_on_confirm_build_pressed"]
+[node name="CurrentBuildingDisplay" type="VBoxContainer" parent="GUI/Tile_Info"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="building_name" type="Label" parent="GUI/Tile_Info/CurrentBuildingDisplay"]
+layout_mode = 2
+text = "building name"
+
+[node name="storage" type="Label" parent="GUI/Tile_Info/CurrentBuildingDisplay"]
+layout_mode = 2
+text = "storage"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="date_label" type="Label" parent="GUI/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Date Time"
+
+[node name="faster_button" type="Button" parent="GUI/HBoxContainer"]
+layout_mode = 2
+text = "Faster"
+
+[node name="slower_button" type="Button" parent="GUI/HBoxContainer"]
+layout_mode = 2
+text = "Slower"
+
+[connection signal="new_building" from="GUI" to="." method="_on_gui_new_building"]
+[connection signal="pressed" from="GUI/Tile_Info/NewBuildContainer/ConfirmBuild" to="GUI" method="_on_confirm_build_pressed"]
+[connection signal="pressed" from="GUI/HBoxContainer/faster_button" to="GUI" method="_on_faster_button_pressed"]
+[connection signal="pressed" from="GUI/HBoxContainer/slower_button" to="GUI" method="_on_slower_button_pressed"]

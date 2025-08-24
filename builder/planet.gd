@@ -5,15 +5,29 @@ signal tile_selected(tile)
 var radius = 10
 
 var tiles = []
+var cities = {}
+
+func process(delta:float):
+	for city_name in cities:
+		var city = cities[city_name]
+		city.process(delta)
 
 func on_tile_selected(tile):
 	print(tile.get_display_type() + " tile selected ")
-	print("Elevation: ",tile.elevation)
-	print("Temperature: ", tile.temperature)
-	print("Precipitation: ", tile.precipitation)
-	print("Lat/Lon: ", tile.lat_lon)
-	print("Materials: ",tile.raw_material)
+	#print("Elevation: ",tile.elevation)
+	#print("Temperature: ", tile.temperature)
+	#print("Precipitation: ", tile.precipitation)
+	#print("Lat/Lon: ", tile.lat_lon)
+	#print("Materials: ",tile.raw_material)
+	#print("Neighbors: ",tile.neighbor_tiles)
+	#print("Diagonals: ",tile.diagonal_tiles)
 	tile_selected.emit(tile)
+
+func add_city(city:City):
+	if city.display_name in cities:
+		printerr("City ",city.display_name," already exists.")
+		return 
+	cities[city.display_name] = city
 
 func add_tile(tile):
 	#print("Adding tile " , tile)

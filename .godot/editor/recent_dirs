@@ -1,3 +1,7 @@
+res://game
+/home/nova/game_dev/godot/space_civ/game/items/
+res://game/buildings/wheat_farm/
+res://game/buildings/camp/
+res://builder/names
 res://game/buildings
-res://game/materials/
 res://tiles/terrain

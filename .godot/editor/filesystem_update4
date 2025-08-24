@@ -1,6 +1,12 @@
-res://game/game.gd
-res://game/gui.gd
-res://tiles/terrain/blank_tile.tscn
 res://game/game.tscn
-res://game/buildings/camp.res
-res://game/buildings/wheat_farm.res
+res://tiles/terrain/blank_tile.tscn
+res://builder/names/city_test.tscn
+res://tiles/tile.gd
+res://game/biomes.gd
+res://game/items/Item_Library.gd
+res://game/gui.gd
+res://game/global.gd
+res://builder/planet.gd
+res://game/game.gd
+res://game/city.gd
+res://builder/planet_builder.gd

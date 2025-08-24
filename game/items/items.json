@@ -1,0 +1,30 @@
+{
+	"winter_wheat_plant" : {
+		"comments" : ["The optimum stand of winter wheat is 900,000 to 1,000,000 plants per acre or 21 to 23 plants per square feet. https://extension.umn.edu/planting-small-grains/winter-wheat-seeding-rate-and-depth",
+			"Winter wheat production for 2023 totaled 1.25 billion bushels, up 13 percent from the 2022 total of 1.10 billion bushels. The United States yield, at 50.6 bushels per acre, was up 3.6 bushels from 2022. https://www.nass.usda.gov/Statistics_by_State/Wyoming/Publications/News_Releases/2023/WY-Small-Grains-09292023.pdf",
+			"To facilitate the trading of grain, the USDA created weight standards for each grain so that grain could be weighed to determine the number of bushels rather than trying to make volume measurements. Corn was assigned a bushel weight of 56 pounds, while soybeans and wheat were assigned bushel weights of 60 pounds https://ohioline.osu.edu/factsheet/agf-503",
+			"graphic with harvest dates of all 50 states -Winter wheat is typically planted at the end of September through November and harvested in summer or the early autumn of the next year.  - https://blog.machinefinder.com/15130/a-visual-look-at-winter-wheat-harvest-dates",
+			"One bushel of wheat yields approximately 42 pounds of white flour OR 60 pounds of whole-wheat flour. https://wheatworld.org/facts-about-wheat/",
+			"wheat is typically threshed on site to make it easier to ship or store",
+		],
+		"icon" : "wheat",
+		"plants_per_acre" : 1000000 ,
+		"harvest_per_acre" : ["3000 lbs","winter_wheat_grains"],
+		"harvest_start" : "June 15",
+		"harvest_end" : "August 15",
+	},
+	"winter_wheat_grains" : {
+		
+	},
+	"whole_wheat_flour" : {
+		
+	},
+	
+	
+	"iron_ore" : {
+		"icon" : "iron_ore",
+	},
+	"tuna_fish_animal" : {
+		"icon" : "tuna"
+	},
+}

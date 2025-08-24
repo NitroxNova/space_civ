@@ -1,25 +1,34 @@
 extends Node3D
 
-var player
+var curr_player
+var curr_planet 
+var city_namer : City_Namer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	city_namer = City_Namer.new()
+	city_namer.parse_names()
 	var planet_builder = Planet_Builder.new()
 	var mesh = planet_builder.build()
 	#$MeshInstance3D.mesh = mesh
-	var planet = planet_builder.planet
-	add_child(planet)
-	planet.build_tiles()
+	curr_planet = planet_builder.planet
+	add_child(curr_planet)
+	curr_planet.build_tiles()
 	planet_builder.planet.tile_selected.connect(on_tile_selected)
-	player = load("res://game/player.tscn").instantiate()
-	player.global_transform = planet.tiles[0].global_transform
-	player.scale = Vector3.ONE
-	planet.add_child(player)
+	curr_player = load("res://game/player.tscn").instantiate()
+	curr_player.global_transform = curr_planet.tiles[0].global_transform
+	curr_player.scale = Vector3.ONE
+	curr_planet.add_child(curr_player)
+	Game.planets.append(curr_planet)
 
 func on_tile_selected(tile):
 	print("moving to " + str(tile.global_position))
-	player.target_position = tile.global_position
+	curr_player.target_position = tile.global_position
 	$GUI.on_tile_selected(tile)
+
+func _process(delta: float) -> void:
+	
+	$GUI/HBoxContainer/date_label.text = Time.get_datetime_string_from_unix_time(Game.time)
 
 func _input(event):
 	var camera_speed = 1
@@ -45,4 +54,15 @@ func _input(event):
 	else:
 		print(event)
 		
-			
+func _on_gui_new_building(tile: Variant, building_type: Building_Type) -> void:
+	if building_type.type == "city_center":
+		var city = City.new()
+		city.display_name = city_namer.generate_name()
+		#print("new city ", city.display_name)
+		city.center = tile
+		city.randomize_color()
+		curr_planet.add_city(city)
+		city.add_tile(tile)
+	var building = Building.new()
+	building.type = building_type
+	tile.add_building(building)

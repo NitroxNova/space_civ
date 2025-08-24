@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://da5xxo17ylc32"]
+[gd_scene load_steps=4 format=3 uid="uid://da5xxo17ylc32"]
 
 [ext_resource type="Script" uid="uid://hg5rmdmbhdxq" path="res://tiles/tile.gd" id="1_2pqib"]
+[ext_resource type="ArrayMesh" uid="uid://c4cgogn7mnxdh" path="res://tiles/terrain/blank_tile.res" id="2_7h14q"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_4jqqf"]
 data = PackedVector3Array(-0.866, 0, 0.5, 0.866, 0, 0.5, 0, 0, -1, -0.866, 0.1122, 0.5, 0, 0.1122, -1, 0.866, 0.1122, 0.5, 0, 0, -1, 0.866, 0, 0.5, 0.866, 0.1122, 0.5, 0, 0, -1, 0.866, 0.1122, 0.5, 0, 0.1122, -1, 0.866, 0, 0.5, -0.866, 0, 0.5, -0.866, 0.1122, 0.5, 0.866, 0, 0.5, -0.866, 0.1122, 0.5, 0.866, 0.1122, 0.5, -0.866, 0, 0.5, 0, 0, -1, 0, 0.1122, -1, -0.866, 0, 0.5, 0, 0.1122, -1, -0.866, 0.1122, 0.5)
@@ -10,3 +11,9 @@ script = ExtResource("1_2pqib")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("ConcavePolygonShape3D_4jqqf")
+
+[node name="city_colors" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, 0)
+visible = false
+mesh = ExtResource("2_7h14q")
